@@ -10,18 +10,29 @@ const {
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
-// ✅ Initialize S3 client
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
-  },
-  forcePathStyle: false, // ✅ prevents endpoint mismatch
-});
+let s3Client;
+let bucketName;
+let region;
 
-const bucketName = process.env.AWS_BUCKET_NAME;
-const region = process.env.AWS_REGION;
+// ✅ Called once from initS3
+exports.setup = ({
+  region: awsRegion,
+  accessKeyId,
+  secretAccessKey,
+  bucketName: awsBucket,
+}) => {
+  region = awsRegion;
+  bucketName = awsBucket;
+
+  s3Client = new S3Client({
+    region,
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+    },
+    forcePathStyle: false,
+  });
+};
 
 /* ============================================================================
    ✅ Upload file
