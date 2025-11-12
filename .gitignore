@@ -1,0 +1,11 @@
+.env
+node_modules/
+.DS_Store
+uploads/
+package-lock.json
+yarn.lock
+coverage/
+.vscode/
+npm-debug.log
+yarn-error.log
+test/
