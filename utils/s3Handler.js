@@ -194,3 +194,20 @@ exports.completeMultipartUpload = async ({ uploadId, key, parts }) => {
   );
   return response.Location;
 };
+
+exports.uploadPart = async ({ uploadId, key, partNumber, buffer }) => {
+  const response = await s3Client.send(
+    new UploadPartCommand({
+      Bucket: bucketName,
+      Key: key,
+      UploadId: uploadId,
+      PartNumber: Number(partNumber),
+      Body: buffer,
+    })
+  );
+
+  return {
+    ETag: response.ETag,
+    partNumber: Number(partNumber),
+  };
+};

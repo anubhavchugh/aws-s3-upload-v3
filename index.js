@@ -52,6 +52,9 @@ module.exports = {
     isInitialized
       ? s3Handler.initiateMultipartUpload(...args)
       : throwInitError(),
+  uploadPart: (...args) =>
+    isInitialized ? s3Handler.uploadPart(...args) : throwInitError(),
+
   generateUploadPresignedUrls: (...args) =>
     isInitialized
       ? s3Handler.generateUploadPresignedUrls(...args)
