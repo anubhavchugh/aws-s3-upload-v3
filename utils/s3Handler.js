@@ -75,7 +75,7 @@ exports.uploadFiles = async (files, folder = "uploads") => {
 exports.listFiles = async (
   prefix = "",
   limit = 50,
-  continuationToken = null
+  continuationToken = null,
 ) => {
   const params = {
     Bucket: bucketName,
@@ -119,7 +119,7 @@ exports.deleteFile = async (fileKey) => {
     new DeleteObjectCommand({
       Bucket: bucketName,
       Key: fileKey,
-    })
+    }),
   );
 };
 
@@ -155,13 +155,15 @@ exports.generateDownloadUrl = async (fileKey) => {
 /* ============================================================================
    ✅ Multipart upload helpers
 ============================================================================ */
-exports.initiateMultipartUpload = async ({ fileName, folder }) => {
+exports.initiateMultipartUpload = async ({ fileName, folder, contentType }) => {
   const key = `${folder}/${Date.now()}-${fileName}`;
   const response = await s3Client.send(
     new CreateMultipartUploadCommand({
       Bucket: bucketName,
       Key: key,
-    })
+      ContentType: contentType || "application/octet-stream",
+      ContentDisposition: "inline",
+    }),
   );
   return response;
 };
@@ -179,7 +181,7 @@ exports.generateUploadPresignedUrls = async ({ uploadId, key, parts }) => {
         expiresIn: 3600,
       });
       return { partNumber: index + 1, uploadUrl: signedUrl };
-    })
+    }),
   );
 };
 
@@ -190,7 +192,7 @@ exports.completeMultipartUpload = async ({ uploadId, key, parts }) => {
       Key: key,
       UploadId: uploadId,
       MultipartUpload: { Parts: parts },
-    })
+    }),
   );
   return response.Location;
 };
@@ -203,7 +205,7 @@ exports.uploadPart = async ({ uploadId, key, partNumber, buffer }) => {
       UploadId: uploadId,
       PartNumber: Number(partNumber),
       Body: buffer,
-    })
+    }),
   );
 
   return {
