@@ -1,12 +1,19 @@
 {
   "name": "aws-s3-upload-v3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight AWS S3 helper library built on AWS SDK v3 with upload, list, delete, and presigned URL support.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"No test specified\" && exit 0"
   },
-  "keywords": ["aws", "s3", "upload", "sdk-v3", "nodejs", "library"],
+  "keywords": [
+    "aws",
+    "s3",
+    "upload",
+    "sdk-v3",
+    "nodejs",
+    "library"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "repository": {
